@@ -37,6 +37,10 @@ export const CardSentiment = ({
 
   console.log(tooltipVisible);
 
+  const getConfiabilityClass = (conf: string) => {
+    return `py-2 rounded-md bg-gradient-to-r from-${confiability_color[conf]}-300 to-${confiability_color[conf]}-500 border-r border-${confiability_color[conf]}-500`;
+  };
+
   return (
     <motion.div
       variants={{
@@ -60,7 +64,7 @@ export const CardSentiment = ({
           >
             <div
               style={{ width: `${confiability}%` }}
-              className={`py-2 bg-${confiability_color["low"]}-300 rounded-md bg-gradient-to-r from-${confiability_color[conf]}-300 to-${confiability_color[conf]}-500 border-r border-${confiability_color[confiability]}-500`}
+              className={getConfiabilityClass(conf)}
             />
             {tooltipVisible && (
               <motion.div
