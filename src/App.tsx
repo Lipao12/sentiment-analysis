@@ -1,7 +1,9 @@
+import { SentimentPage } from "./pages/sentiment-main";
+
 export function App() {
   return (
-    <div>
-      <h1 className="text-secundary text-[50px]">Olá Mundo</h1>
+    <div className="max-w-6xl px-6 py-10 mx-auto space-y-8">
+      <SentimentPage />
     </div>
   );
 }
