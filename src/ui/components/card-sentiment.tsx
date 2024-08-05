@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
 interface CardSentimentProps {
   sentiment: string;
   confiability: number;
@@ -14,6 +15,7 @@ export const CardSentiment = ({
   const [conf, setConf] = useState<"low" | "mid" | "high">("low");
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
+  console.log(sentiment, confiability);
   const sentiment_color: Record<string, string> = {
     positive: "bg-emerald-400 border-emerald-500",
     neutral: "bg-blue-400 border-blue-500",
@@ -37,22 +39,29 @@ export const CardSentiment = ({
 
   console.log(tooltipVisible);
 
-  const getConfiabilityClass = (conf: string) => {
+  const getSentmentClass = (sentiment: string) => {
+    return (
+      `flex flex-row w-auto px-4 py-3 border  bg- gap-5 rounded-lg shadow-sm ` +
+      sentiment_color[sentiment]
+    );
+  };
+
+  const getConfiabilityClass = (conf: "low" | "mid" | "high") => {
     return `py-2 rounded-md bg-gradient-to-r from-${confiability_color[conf]}-300 to-${confiability_color[conf]}-500 border-r border-${confiability_color[conf]}-500`;
   };
 
+  const handleSentiment = (str: string) => {
+    if (str === "positive") return "Positivo";
+    else if (str === "neutral") return "Neutro";
+    return "Negativo";
+  };
+
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, scale: 0.5 },
-        visible: { opacity: 1, scale: 1 },
-      }}
-      className={`flex flex-row w-auto px-4 py-3 border ${sentiment_color[sentiment]} bg- gap-5 rounded-lg shadow-sm `}
-    >
+    <div className={getSentmentClass(sentiment)}>
       <div className="w-1/5 flex flex-col">
         <div>
           <h1 className="text-lg font-semibold text-slate-50 mb-2">
-            Sentimento
+            {handleSentiment(sentiment)}
           </h1>
         </div>
         <div>
@@ -64,7 +73,9 @@ export const CardSentiment = ({
           >
             <div
               style={{ width: `${confiability}%` }}
-              className={getConfiabilityClass(conf)}
+              className={
+                "py-2 rounded-md bg-gradient-to-r from-blue-300 to-blue-500 border-r border-blue-500"
+              } //getConfiabilityClass(conf)}
             />
             {tooltipVisible && (
               <motion.div
@@ -81,6 +92,6 @@ export const CardSentiment = ({
       <div className="w-4/5 border py-2 px-3 rounded-md bg-slate-100 border-gray-300 shadow-inner flex items-center ">
         <span className="text-gray-700">{text}</span>
       </div>
-    </motion.div>
+    </div>
   );
 };

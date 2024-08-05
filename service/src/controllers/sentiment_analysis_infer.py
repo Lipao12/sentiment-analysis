@@ -1,3 +1,5 @@
+import uuid
+
 class SentimentAnalysisInfer:
     def __init__(self, sentiment_analysis_repository) -> None:
         self.sentiment_analysis_repository = sentiment_analysis_repository
@@ -5,7 +7,7 @@ class SentimentAnalysisInfer:
         try:
             result = self.sentiment_analysis_repository.analyse_sentiment(text)
             return{
-                    'body': {"sentiment": result},
+                    'body': {"sentiment": result, "text": text, "id": str(uuid.uuid4())},
                     'status_code': 201
                 }
         

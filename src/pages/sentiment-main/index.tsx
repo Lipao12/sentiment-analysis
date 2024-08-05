@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Divider } from "../../ui/components/divider";
 import { ShowResults } from "./show-results";
 import { UserInput } from "./user-input";
 
 export const SentimentPage = () => {
+  const [sentiments, setSentiments] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   return (
     <div>
       <div>
@@ -14,9 +17,17 @@ export const SentimentPage = () => {
           de sentimentos.
         </p>
       </div>
-      <UserInput />
+      <UserInput
+        setSentiments={setSentiments}
+        loading={loading}
+        setLoading={setLoading}
+      />
       <Divider />
-      <ShowResults />
+      <ShowResults
+        sentiments={sentiments}
+        loading={loading}
+        setLoading={setLoading}
+      />
     </div>
   );
 };
