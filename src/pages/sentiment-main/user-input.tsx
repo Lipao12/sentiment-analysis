@@ -1,14 +1,15 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { api } from "../../lib/axios";
 
 interface UserInputProps {
+  sentiments: any;
   setSentiments: any;
   loading: boolean;
   setLoading: (loading: boolean) => void;
 }
 
 export const UserInput = ({
+  sentiments,
   setSentiments,
   loading,
   setLoading,
@@ -21,31 +22,61 @@ export const UserInput = ({
     setText(e.target.value);
     if (text != "") {
       try {
-        const response = await api.post("/analyse", {
+        const response = await api.post("/analyse_sentence", {
           text: text,
         });
         setPrediction(response.data.sentiment.label);
       } catch (err: any) {}
     }
   };
+
+  const separeteSentences = (texts: string) => {
+    const parts = texts.split("\n");
+    return parts;
+  };
+
+  const predictMany = async (texts: string) => {
+    const sentences = separeteSentences(texts);
+    console.log("Sentensas: ", sentences);
+    try {
+      setLoading(true);
+      const response = await api.post("/analyse_sentences", {
+        text: sentences,
+      });
+
+      console.log(response.data.sentiment);
+      setSentiments((prev: any) => [...prev, ...response.data.sentiment]);
+      setText("");
+    } catch (err: any) {
+      console.error(err.response?.data?.message || err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleGetAnalysis = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (text != "") {
-      try {
-        setLoading(true);
-        const response = await api.post("/analyse", {
-          text: text,
-        });
-        console.log(response.data);
-        setSentiments((prev: any) => [...prev, response.data]);
-        setText("");
-      } catch (err: any) {
-        console.error(err.response?.data?.message || err);
-      } finally {
-        setLoading(false);
+    if (!text.includes("\n")) {
+      if (text != "") {
+        try {
+          setLoading(true);
+          const response = await api.post("/analyse_sentence", {
+            text: text,
+          });
+
+          console.log(response.data);
+          setSentiments((prev: any) => [...prev, response.data.sentiment]);
+          setText("");
+        } catch (err: any) {
+          console.error(err.response?.data?.message || err);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        console.log("Text vazio");
       }
     } else {
-      console.log("Text vazio");
+      predictMany(text);
     }
   };
 
@@ -56,21 +87,12 @@ export const UserInput = ({
     >
       <textarea
         className="w-full p-4 border border-gray-300 rounded-md bg-slate-50 focus:outline-none focus:ring-2 focus:ring-secundary"
-        placeholder="Digite ou cole o texto aqui..."
+        placeholder="Digite ou cole o texto aqui, incluindo quebras de linha. As frases serão analisadas separadamente..."
         value={text}
         onChange={(e) => {
           handleChangeText(e);
         }}
       />
-      {text && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute bottom-full mb-2 left-1/4 transform -translate-x-1/2 px-2 py-1 bg-gray-500 text-gray-300 text-xs rounded z-10"
-        >
-          Preview: {prediction}
-        </motion.div>
-      )}
       <button
         type="submit"
         className="mt-4 w-auto p-2 bg-secundary text-slate-50 rounded hover:bg-gray-900 transition-colors duration-200"

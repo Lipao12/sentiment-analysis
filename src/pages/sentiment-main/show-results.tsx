@@ -13,7 +13,7 @@ export const ShowResults = ({
   setLoading,
 }: ShowResultsProps) => {
   if (sentiments.length > 0) {
-    console.log(sentiments);
+    console.log("Aqui temos: ", sentiments);
   }
   return (
     <div className="">
@@ -28,9 +28,9 @@ export const ShowResults = ({
             return (
               <CardSentiment
                 key={sentiment.id}
-                sentiment={sentiment.sentiment.label}
-                confiability={Math.floor(sentiment.sentiment.score * 100)}
-                text={sentiment.text.text}
+                sentiment={sentiment.label}
+                confiability={Math.floor(sentiment.score * 100)}
+                text={sentiment.text}
               />
             );
           })}
