@@ -6,8 +6,10 @@ class SentimentAnalysisInfer:
     def infer_one(self, text:str):
         try:
             result = self.sentiment_analysis_repository.analyse_sentiment(text)
+            result["text"] = text['text']
+            result["id"] = str(uuid.uuid4())
             return{
-                    'body': {"sentiment": result, "text": text, "id": str(uuid.uuid4())},
+                    'body': {"sentiment": result},
                     'status_code': 201
                 }
         
@@ -20,7 +22,11 @@ class SentimentAnalysisInfer:
     def infer_many(self, texts):
         try:
             result = self.sentiment_analysis_repository.analyse_many_sentiment(texts)
-            print(result)
+            print("Resultado encontrado: ", result)
+
+            if isinstance(result, dict) and 'status_code' in result:
+                return result
+
             return{
                     'body': {"sentiment": result ,"id": str(uuid.uuid4())},
                     'status_code': 201
