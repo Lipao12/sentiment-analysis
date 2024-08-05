@@ -1,15 +1,14 @@
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { api } from "../../lib/axios";
 
 interface UserInputProps {
-  sentiments: any;
   setSentiments: any;
   loading: boolean;
   setLoading: (loading: boolean) => void;
 }
 
 export const UserInput = ({
-  sentiments,
   setSentiments,
   loading,
   setLoading,
@@ -20,7 +19,7 @@ export const UserInput = ({
   const handleChangeText = async (e: any) => {
     e.preventDefault();
     setText(e.target.value);
-    if (text != "") {
+    if (text !== "") {
       try {
         const response = await api.post("/analyse_sentence", {
           text: text,
@@ -30,14 +29,14 @@ export const UserInput = ({
     }
   };
 
-  const separeteSentences = (texts: string) => {
+  const separateSentences = (texts: string) => {
     const parts = texts.split("\n");
     return parts;
   };
 
   const predictMany = async (texts: string) => {
-    const sentences = separeteSentences(texts);
-    console.log("Sentensas: ", sentences);
+    const sentences = separateSentences(texts);
+    console.log("Sentenças: ", sentences);
     try {
       setLoading(true);
       const response = await api.post("/analyse_sentences", {
@@ -57,7 +56,7 @@ export const UserInput = ({
   const handleGetAnalysis = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!text.includes("\n")) {
-      if (text != "") {
+      if (text !== "") {
         try {
           setLoading(true);
           const response = await api.post("/analyse_sentence", {
@@ -73,7 +72,7 @@ export const UserInput = ({
           setLoading(false);
         }
       } else {
-        console.log("Text vazio");
+        console.log("Texto vazio");
       }
     } else {
       predictMany(text);
@@ -93,13 +92,25 @@ export const UserInput = ({
           handleChangeText(e);
         }}
       />
-      <button
-        type="submit"
-        className="mt-4 w-auto p-2 bg-secundary text-slate-50 rounded hover:bg-gray-900 transition-colors duration-200"
-        disabled={loading}
-      >
-        Analisar Sentimento
-      </button>
+      <div className="flex flex-row justify-between items-center w-full mt-4">
+        {
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="px-2 py-1 bg-gray-600 text-gray-300 text-xs rounded"
+          >
+            Preview: {text && prediction}
+          </motion.div>
+        }
+        <button
+          type="submit"
+          className="ml-4 w-auto p-2 bg-secundary text-slate-50 rounded hover:bg-gray-900 transition-colors duration-200"
+          disabled={loading}
+        >
+          Analisar Sentimento
+        </button>
+      </div>
     </form>
   );
 };

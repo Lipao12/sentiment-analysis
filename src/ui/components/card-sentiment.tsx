@@ -21,11 +21,6 @@ export const CardSentiment = ({
     neutral: "bg-blue-400 border-blue-500",
     negative: "bg-red-400 border-red-500",
   };
-  const confiability_color: Record<string, string> = {
-    low: "red",
-    mid: "yellow",
-    high: "green",
-  };
 
   useEffect(() => {
     if (confiability < 45) {
@@ -47,7 +42,12 @@ export const CardSentiment = ({
   };
 
   const getConfiabilityClass = (conf: "low" | "mid" | "high") => {
-    return `py-2 rounded-md bg-gradient-to-r from-${confiability_color[conf]}-300 to-${confiability_color[conf]}-500 border-r border-${confiability_color[conf]}-500`;
+    const confiability_color: Record<string, string> = {
+      low: "py-2 rounded-md bg-gradient-to-r from-red-300 to-red-500 border-r border-red-500",
+      mid: "py-2 rounded-md bg-gradient-to-r from-yellow-300 to-yellow-500 border-r border-yellow-500",
+      high: "py-2 rounded-md bg-gradient-to-r from-green-300 to-green-500 border-r border-green-500",
+    };
+    return confiability_color[conf];
   };
 
   const handleSentiment = (str: string) => {
@@ -73,9 +73,7 @@ export const CardSentiment = ({
           >
             <div
               style={{ width: `${confiability}%` }}
-              className={
-                "py-2 rounded-md bg-gradient-to-r from-blue-300 to-blue-500 border-r border-blue-500"
-              } //getConfiabilityClass(conf)}
+              className={getConfiabilityClass(conf)}
             />
             {tooltipVisible && (
               <motion.div
