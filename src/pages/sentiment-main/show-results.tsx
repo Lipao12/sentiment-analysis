@@ -7,11 +7,7 @@ interface ShowResultsProps {
   setLoading: (loading: boolean) => void;
 }
 
-export const ShowResults = ({
-  sentiments,
-  loading,
-  setLoading,
-}: ShowResultsProps) => {
+export const ShowResults = ({ sentiments, loading }: ShowResultsProps) => {
   if (sentiments.length > 0) {
     console.log("Aqui temos: ", sentiments);
   }

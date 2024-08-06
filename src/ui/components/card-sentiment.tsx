@@ -36,7 +36,7 @@ export const CardSentiment = ({
 
   const getSentmentClass = (sentiment: string) => {
     return (
-      `flex flex-row w-auto px-4 py-3 border  bg- gap-5 rounded-lg shadow-sm ` +
+      `flex flex-row w-auto px-4 py-3 border  bg- gap-5 rounded-lg shadow-md ` +
       sentiment_color[sentiment]
     );
   };
