@@ -1,7 +1,7 @@
 from transformers import pipeline
 import uuid
  
-sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/BERT-sentiment-analysis-portuguese")
+sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/BERT-sentiment-analysis-portuguese-with-undersampling-v2")
 #sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/sentiment-model-portuguese-distilbert-pos-neg")
 #sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/finetuning-sentiment-model-3500-samples")
 
@@ -17,9 +17,10 @@ class SentimentAnalysisRepo:
             map_label = {
                 "LABEL_0": "negative",
                 "LABEL_1": "positive",
+                "LABEL_2": "neutral"
                 }
             prediction['label'] = map_label.get(prediction['label'], 'unknown')
-            print(prediction)
+            print("Pred: ", prediction)
             return prediction
         
         return {'label': 'unknown', 'score': 0.0}
@@ -35,6 +36,7 @@ class SentimentAnalysisRepo:
                     map_label = {
                         "LABEL_0": "negative",
                         "LABEL_1": "positive",
+                        "LABEL_2": "neutral"
                         }
                     prediction[0]['label'] = map_label.get(prediction[0]['label'], 'unknown')
                     prediction[0]['text'] = text
