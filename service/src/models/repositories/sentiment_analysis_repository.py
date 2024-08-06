@@ -1,7 +1,8 @@
 from transformers import pipeline
 import uuid
  
-sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/sentiment-model-portuguese-distilbert-pos-neg")
+sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/BERT-sentiment-analysis-portuguese")
+#sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/sentiment-model-portuguese-distilbert-pos-neg")
 #sentiment_model = pipeline(task="sentiment-analysis", model="lipaoMai/finetuning-sentiment-model-3500-samples")
 
 class SentimentAnalysisRepo:
