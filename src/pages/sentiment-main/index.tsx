@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Divider } from "../../ui/components/divider";
+import { UploadComponent } from "../../ui/components/uptload";
 import { ShowResults } from "./show-results";
 import { UserInput } from "./user-input";
 
 export const SentimentPage = () => {
   const [sentiments, setSentiments] = useState<any>([]);
+  const [uploadTxts, setUploadTxts] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   return (
     <div>
@@ -21,8 +23,13 @@ export const SentimentPage = () => {
         setSentiments={setSentiments}
         loading={loading}
         setLoading={setLoading}
+        uploadTxts={uploadTxts}
+        setUploadTxts={setUploadTxts}
       />
       <Divider />
+      <div className="w-full flex justify-end py-3">
+        <UploadComponent setUploadTxts={setUploadTxts} />
+      </div>
       <ShowResults
         sentiments={sentiments}
         loading={loading}

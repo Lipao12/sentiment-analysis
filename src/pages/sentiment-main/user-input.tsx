@@ -1,17 +1,21 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../lib/axios";
 
 interface UserInputProps {
   setSentiments: any;
   loading: boolean;
+  uploadTxts: string;
   setLoading: (loading: boolean) => void;
+  setUploadTxts: (loading: string) => void;
 }
 
 export const UserInput = ({
   setSentiments,
   loading,
+  uploadTxts,
   setLoading,
+  setUploadTxts,
 }: UserInputProps) => {
   const [text, setText] = useState("");
   const [prediction, setPrediction] = useState("");
@@ -19,10 +23,10 @@ export const UserInput = ({
   const handleChangeText = async (e: any) => {
     e.preventDefault();
     setText(e.target.value);
-    if (text !== "") {
+    if (e.target.value !== "") {
       try {
         const response = await api.post("/analyse_sentence", {
-          text: text,
+          text: e.target.value,
         });
         setPrediction(response.data.sentiment.label);
       } catch (err: any) {}
@@ -32,6 +36,21 @@ export const UserInput = ({
   const separateSentences = (texts: string) => {
     const parts = texts.split("\n");
     return parts;
+  };
+
+  const predictOne = async (text: string) => {
+    try {
+      setLoading(true);
+      const response = await api.post("/analyse_sentence", {
+        text: text,
+      });
+      setSentiments((prev: any) => [...prev, response.data.sentiment]);
+      setText("");
+    } catch (err: any) {
+      console.error(err.response?.data?.message || err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const predictMany = async (texts: string) => {
@@ -55,29 +74,30 @@ export const UserInput = ({
 
   const handleGetAnalysis = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!text.includes("\n")) {
-      if (text !== "") {
-        try {
-          setLoading(true);
-          const response = await api.post("/analyse_sentence", {
-            text: text,
-          });
-
-          console.log(response.data);
-          setSentiments((prev: any) => [...prev, response.data.sentiment]);
-          setText("");
-        } catch (err: any) {
-          console.error(err.response?.data?.message || err);
-        } finally {
-          setLoading(false);
-        }
+    if (text !== "") {
+      if (!text.includes("\n")) {
+        predictOne(text);
       } else {
-        console.log("Texto vazio");
+        predictMany(text);
       }
     } else {
-      predictMany(text);
+      console.log("Texto vazio");
     }
   };
+
+  useEffect(() => {
+    if (typeof uploadTxts === "string" && uploadTxts !== "") {
+      if (!uploadTxts.includes("\n")) {
+        predictOne(uploadTxts);
+        setUploadTxts("");
+      } else {
+        predictMany(uploadTxts);
+        setUploadTxts("");
+      }
+    } else {
+      console.log("Arquivo vazio");
+    }
+  }, [uploadTxts]);
 
   return (
     <form
