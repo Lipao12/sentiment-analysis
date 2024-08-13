@@ -25,3 +25,12 @@ def analyse_senteces():
     response = controller.infer_many(request.json)
 
     return jsonify(response['body']), response['status_code']
+
+@routes_bp.route("/analyse_insta_comment", methods=["POST"])
+def analyse_insta_comment():
+    sentimentRepo = SentimentAnalysisRepo()
+    controller = SentimentAnalysisInfer(sentimentRepo)
+
+    response = controller.infer_insta_comments(request.json)
+
+    return jsonify(response['body']), response['status_code']
