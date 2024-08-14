@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
-import { FaFileAlt, FaLink } from "react-icons/fa";
+import { FaChartPie, FaFileAlt, FaLink, FaRegFileAlt } from "react-icons/fa";
 
 interface SwitchSelectionProps {
   selected: string;
+  result?: boolean;
   setSelected: (str: string) => void;
 }
 
 export const SwitchSelection = ({
   selected,
+  result = false,
   setSelected,
 }: SwitchSelectionProps) => {
   const switch2File = () => {
@@ -30,25 +32,45 @@ export const SwitchSelection = ({
         className="flex justify-center items-center w-1/2 z-10"
         onClick={switch2File}
       >
-        <FaFileAlt
-          className={`${
-            selected === "file"
-              ? "opacity-100 text-slate-300"
-              : "opacity-50 text-gray-600"
-          }`}
-        />
+        {result ? (
+          <FaRegFileAlt
+            className={`${
+              selected === "file"
+                ? "opacity-100 text-slate-300"
+                : "opacity-50 text-gray-600"
+            }`}
+          />
+        ) : (
+          <FaFileAlt
+            className={`${
+              selected === "file"
+                ? "opacity-100 text-slate-300"
+                : "opacity-50 text-gray-600"
+            }`}
+          />
+        )}
       </div>
       <div
         className="flex justify-center items-center w-1/2 z-10"
         onClick={switch2Link}
       >
-        <FaLink
-          className={` ${
-            selected === "link"
-              ? "opacity-100 text-slate-300"
-              : "opacity-50 text-gray-600"
-          }`}
-        />
+        {result ? (
+          <FaChartPie
+            className={` ${
+              selected === "link"
+                ? "opacity-100 text-slate-300"
+                : "opacity-50 text-gray-600"
+            }`}
+          />
+        ) : (
+          <FaLink
+            className={` ${
+              selected === "link"
+                ? "opacity-100 text-slate-300"
+                : "opacity-50 text-gray-600"
+            }`}
+          />
+        )}
       </div>
     </motion.div>
   );
