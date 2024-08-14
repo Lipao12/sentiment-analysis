@@ -27,6 +27,7 @@ class SentimentAnalysisRepo:
     def analyse_many_sentiment(self, texts):
         predictions=[]
         texts = texts['text']
+        counts = {}
         for text in texts:
             try:
                 prediction = sentiment_model(text.lower())
@@ -40,6 +41,10 @@ class SentimentAnalysisRepo:
                     prediction[0]['text'] = text
                     prediction[0]['id'] = str(uuid.uuid4())
                     predictions.append(prediction[0])
+                    if prediction[0]["label"] in counts:
+                        counts[prediction[0]["label"]] = counts[prediction[0]["label"]] +1
+                    else:
+                        counts[prediction[0]["label"]] = 1
                 else:
                     predictions.append({'label': 'unknown', 'score': 0.0, 'text': text, 'id': str(uuid.uuid4())})
             except Exception as exception:
@@ -50,7 +55,7 @@ class SentimentAnalysisRepo:
                 
 
         if predictions:
-            return predictions
+            return predictions, counts
         
         return {
                 "body": {"error": "Fail to infer all the sentences", "message": "No predictions made"},

@@ -42,16 +42,14 @@ export const ShowChartResult = ({
       <PieChart data={data} onClick={handleChartClick} />
       {filteredSentiments.length > 0 ? (
         <div className="mt-2 p-4 gap-4 flex flex-col-reverse">
-          {filteredSentiments.filter((sentiment: any) => {
-            return (
-              <CardSentiment
-                key={sentiment.id}
-                sentiment={sentiment.label}
-                confiability={Math.floor(sentiment.score * 100)}
-                text={sentiment.text}
-              />
-            );
-          })}
+          {filteredSentiments.map((sentiment: any) => (
+            <CardSentiment
+              key={sentiment.id}
+              sentiment={sentiment.label}
+              confiability={Math.floor(sentiment.score * 100)}
+              text={sentiment.text}
+            />
+          ))}
         </div>
       ) : (
         <div className="flex items-center justify-center w-full p-4">

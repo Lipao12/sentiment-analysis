@@ -8,6 +8,7 @@ interface UserInputProps {
   setSentiments: any;
   setLoading: (loading: boolean) => void;
   setUploadTxts: (loading: string) => void;
+  setCountsSentiments: any;
 }
 
 export const UserInput = ({
@@ -16,6 +17,7 @@ export const UserInput = ({
   setSentiments,
   setLoading,
   setUploadTxts,
+  setCountsSentiments,
 }: UserInputProps) => {
   const [text, setText] = useState("");
   const [prediction, setPrediction] = useState("");
@@ -64,6 +66,7 @@ export const UserInput = ({
 
       console.log(response.data.sentiment);
       setSentiments((prev: any) => [...prev, ...response.data.sentiment]);
+      setCountsSentiments(response.data.counts);
       setText("");
     } catch (err: any) {
       console.error(err.response?.data?.message || err);

@@ -8,9 +8,6 @@ interface ShowResultsProps {
 }
 
 export const ShowResults = ({ sentiments, loading }: ShowResultsProps) => {
-  if (sentiments.length > 0) {
-    console.log("Aqui temos: ", sentiments);
-  }
   return (
     <div className="">
       {loading && (

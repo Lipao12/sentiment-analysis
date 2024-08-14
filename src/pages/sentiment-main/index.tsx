@@ -9,11 +9,7 @@ import { UserInputLink } from "./user-input-link";
 
 export const SentimentPage = () => {
   const [sentiments, setSentiments] = useState<any>([]);
-  const [counts, setCountsSentiments] = useState<any>({
-    neutral: 10,
-    positive: 5,
-    negative: 13,
-  });
+  const [counts, setCountsSentiments] = useState<any>({});
   const [uploadTxts, setUploadTxts] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedLinkFile, setSelectedLinkFile] = useState("file");
@@ -44,6 +40,7 @@ export const SentimentPage = () => {
           setLoading={setLoading}
           uploadTxts={uploadTxts}
           setUploadTxts={setUploadTxts}
+          setCountsSentiments={setCountsSentiments}
         />
       ) : (
         <UserInputLink

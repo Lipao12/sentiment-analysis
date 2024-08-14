@@ -15,7 +15,6 @@ export const CardSentiment = ({
   const [conf, setConf] = useState<"low" | "mid" | "high">("low");
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  console.log(sentiment, confiability);
   const sentiment_color: Record<string, string> = {
     positive: "bg-emerald-400 border-emerald-500",
     neutral: "bg-blue-400 border-blue-500",
@@ -31,8 +30,6 @@ export const CardSentiment = ({
       setConf("high");
     }
   }, [confiability]);
-
-  console.log(tooltipVisible);
 
   const getSentmentClass = (sentiment: string) => {
     return (

@@ -21,12 +21,13 @@ class SentimentAnalysisInfer:
     
     def infer_many(self, texts):
         try:
-            result = self.sentiment_analysis_repository.analyse_many_sentiment(texts)
+            print(texts)
+            result, counts = self.sentiment_analysis_repository.analyse_many_sentiment(texts)
             if isinstance(result, dict) and 'status_code' in result:
                 return result
 
             return{
-                    'body': {"sentiment": result ,"id": str(uuid.uuid4())},
+                    'body': {"sentiment": result ,"id": str(uuid.uuid4()), "counts": counts},
                     'status_code': 201
                 }
         
