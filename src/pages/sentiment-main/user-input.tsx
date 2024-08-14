@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { api } from "../../lib/axios";
 
 interface UserInputProps {
-  setSentiments: any;
   loading: boolean;
   uploadTxts: string;
+  setSentiments: any;
   setLoading: (loading: boolean) => void;
   setUploadTxts: (loading: string) => void;
 }
 
 export const UserInput = ({
-  setSentiments,
   loading,
   uploadTxts,
+  setSentiments,
   setLoading,
   setUploadTxts,
 }: UserInputProps) => {
